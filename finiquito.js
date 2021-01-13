@@ -68,6 +68,7 @@ function calculadoraDespidoInjustificado(){
   let prima_vacacional_i      = Number( $( ID_INPUT_P_VACA ).val() );
   let dias_trabajados_adeuda  = Number( $( ID_INPUT_D_N_PAY ).val() );
   let dias_vacacion_adeuda    = Number( $( ID_INPUT_D_VACA_D ).val() );
+  let dias_aguinaldo          = Number( $( ID_INPUT_D_AGUI ).val() );
 
   let prima_vacacional_diaria   = ( salario_diario * dias_vacacion_pago ) / 100 * prima_vacacional_i / 365.25;
   let salario_diario_integrado  = ( ( (salario_diario * 15) / 365 ) + salario_diario + prima_vacacional_diaria );
@@ -86,7 +87,13 @@ function calculadoraDespidoInjustificado(){
   let proporcional_dias_t_adeudados = dias_trabajados_adeuda * salario_diario_integrado;
   let vacaciones_adeudadas_prop     = dias_vacacion_adeuda * salario_diario_integrado;
 
-  let sumatoria = indemniza_3_meses + indemniza_20_dpa + prima_antiguedad + vacaciones_adeudadas_prop + proporcional_dias_t_adeudados;
+  let vacaciones_proporcional       = salario_diario * dias_vacacion_pago;
+  let prima_vacacional              = vacaciones_proporcional / 100 * prima_vacacional_i;
+
+  let dias_laborados_anio_corriente = getDiasTrabajadosAnioCorriente();
+  let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * dias_laborados_anio_corriente;
+
+  let sumatoria = indemniza_3_meses + prima_antiguedad + aguinaldo_proporcional + vacaciones_adeudadas_prop + vacaciones_proporcional + proporcional_dias_t_adeudados;
 
   $( ID_LABEL_TOTAL ).text( finiquitoFormatMoney( sumatoria ) );
   $( ID_LABEL_3S ).text( finiquitoFormatMoney( indemniza_3_meses ) );
@@ -94,6 +101,8 @@ function calculadoraDespidoInjustificado(){
   $( ID_LABEL_PRIMA_ANTIGUEDAD ).text( finiquitoFormatMoney( prima_antiguedad ) );
   $( ID_LABEL_DT_ADEUDA ).text( finiquitoFormatMoney( proporcional_dias_t_adeudados ) );
   $( ID_LABEL_VACA_D_P ).text( finiquitoFormatMoney( vacaciones_adeudadas_prop ) );
+  $( ID_LABEL_VACA_PR ).text( finiquitoFormatMoney( prima_vacacional ) );
+  $( ID_LABEL_AGUINALDO_PROP ).text( finiquitoFormatMoney( aguinaldo_proporcional ) );
 
   $( ID_REN_VOLUNTARIA ).hide();
   $( ID_DESPIDO_INJUST ).show();
@@ -108,7 +117,11 @@ function getDiasTrabajados(){
 function getDiasTrabajadosAnioCorriente(){
   let dIni = new Date(  new Date().getFullYear(), 0, 1 ).getTime() / 1000 / 60 / 60 / 24;
   let dFin = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
-  return dFin - dIni;
+  let res = dFin - dIni;
+  if (res < 0){
+    return 0;
+  }
+  return res;
 }
 
 function calculadoraRenunciaVoluntaria(){
@@ -147,7 +160,7 @@ function calculadoraRenunciaVoluntaria(){
   $( ID_LABEL_AGUINALDO_PROP ).text( finiquitoFormatMoney( aguinaldo_proporcional ) );
   $( ID_LABEL_VACA_D_P ).text( finiquitoFormatMoney( vacaciones_adeudadas_prop ) );
   $( ID_LABEL_VACA_P ).text( finiquitoFormatMoney( vacaciones_proporcional ) );
-  $( ID_LABEL_VACA_PR ).text( finiquitoFormatMoney( vacaciones_proporcional ) );
+  $( ID_LABEL_VACA_PR ).text( finiquitoFormatMoney( prima_vacacional ) );
   $( ID_LABEL_DT_ADEUDA ).text( finiquitoFormatMoney( proporcional_dias_t_adeudados ) );
 
   $( ID_DESPIDO_INJUST ).hide();

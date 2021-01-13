@@ -16,6 +16,8 @@
 
 #finiquitoCont {
   border: 1px solid #ccc;
+  min-width: 500px;
+  min-height: 1200px;
 }
 
 .finiResTit{

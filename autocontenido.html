@@ -1,0 +1,597 @@
+<html>
+  <head>
+    <title>Calculadora de Finiquito - Ley Mexicana del Trabajo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <style>
+    #finiquitoTabs .nav-link {
+      border-radius: 0px !important;
+      color: #000;
+      font-weight: bold;
+    }
+
+    #finiquitoTabs .active{
+      background: #8f100b !important;
+      color: #fff !important;
+    }
+
+    .gj-datepicker-bootstrap [role="right-icon"] button{
+      height: 100%;
+    }
+
+    #finiquitoCont {
+      border: 1px solid #ccc;
+      min-width: 500px;
+      min-height: 1200px;
+    }
+
+    .finiResTit{
+      font-size: 1.75em;
+    }
+
+    .bootstrap-select > .dropdown-toggle::after {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    margin-top: -2px;
+    vertical-align: middle;
+    }
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+  </head>
+  <body>
+    <div class="flush-container">
+      <div class="row">
+
+        <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-5 p-0" id="finiquitoCont">
+
+          <nav class="nav nav-tabs nav-justified text-uppercase" id="finiquitoTabs" role="tablist">
+            <a class="nav-item nav-link active" id="info-lab-tab" data-toggle="tab" href="#info-lab" role="tab" aria-controls="home" aria-selected="true">Información Laboral</a>
+            <a class="nav-item nav-link " id="resultado-tab" data-toggle="tab" href="#resultado" role="tab" aria-controls="resultado" aria-selected="false">Resultado</a>
+          </nav>
+
+          <div class="tab-content" id="finiquitoTabsContent">
+            <div class="tab-pane fade show active" id="info-lab" role="tabpanel" aria-labelledby="info-lab-tab">
+<!-- PESTAÑA UNO INICIO -->
+              <div class="row">
+                <div class="col m-3">
+                  <form>
+
+                    <div class="row align-items-top border-bottom mb-3">
+                        <div class="col-md-4 mb-3 offset-md-2">
+                          <label for="validationTooltip01">Fecha de ingreso</label>
+                          <input class="form-control" id="finiIngreso" />
+                          <small class="form-text text-muted">* Campo obligatorio.</small>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="validationTooltip02">Fecha de renuncia/despido</label>
+                          <input class="form-control" id="finiEgreso" />
+                          <small class="form-text text-muted">* Campo obligatorio, La mínima fecha admitida es <b id="LMinDateE"></b>.</small>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-top border-bottom mb-3">
+                        <div class="col-md-4 mb-3 offset-md-2">
+                          <label for="validationTooltip02">Motivo de finalización de relación laboral</label>
+                          <select class="form-control custom-select " id="finiSelectMotFin"></select>
+                          <small class="form-text text-muted">* Campo obligatorio, Presione para seleccionar.</small>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label for="validationTooltip02">Zona geográfica</label>
+                          <select class="form-control custom-select " id="finiSelectZonaGeo"></select>
+                          <small class="form-text text-muted">* Campo obligatorio, Presione para seleccionar.</small>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-top border-bottom mb-3">
+                        <div class="col-md-4 mb-3 offset-md-2">
+                          <label for="validationTooltip01">Salario diario:</label>
+                          <input type="number" class="form-control" id="finiSalarioDiario" />
+                          <small class="form-text text-muted">* Campo obligatorio.</small>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label for="validationTooltip01">Días de Aguinaldo:</label>
+                          <input type="number" class="form-control" id="finiDiasAguinaldo" />
+                          <small class="form-text text-muted">* Campo obligatorio.</small>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-top border-bottom mb-3">
+                        <div class="col-md-4 mb-3 offset-md-2">
+                          <label for="validationTooltip02" class="">Prima vacacional</label>
+                          <input type="number" class="form-control" id="finiPrimaVacacional"  />
+                          <small class="form-text text-muted">* Campo obligatorio, Se admiten valores entre 0 y 100.</small>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label for="validationTooltip02">Días de vacaciones</label>
+                          <input type="number" class="form-control" id="finiDiasVacaciones"  />
+                          <small class="form-text text-muted">* Campo obligatorio.</small>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-top border-bottom mb-3">
+                        <div class="col-md-4 mb-3 offset-md-2">
+                          <label for="validationTooltip02">Días de vacaciones adeudados del último periodo</label>
+                          <input type="number" class="form-control" id="finiDiasAdeudadosVaca"  />
+                          <small class="form-text text-muted">* Campo obligatorio.</small>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label for="validationTooltip02" class="mb-4">Días laborados no pagados</label>
+                          <input type="number" class="form-control" id="finiDiasNoPagos"  />
+                          <small class="form-text text-muted">* Campo obligatorio.</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col"></div>
+                      <div class="col-auto">
+                          <button type="button" href="#resultado" aria-controls="resultado" class="btn btn-dark btn-calcular-finiquito">Calcular</button>
+                      </div>
+                      <div class="col"></div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+<!-- PESTAÑAQ UNO FIN -->
+            </div>
+
+            <div class="tab-pane fade" id="resultado" role="tabpanel" aria-labelledby="resultado-tab">
+<!-- PESTAÑA DOS INICIO -->
+<!-- NO RESULTADOS -->
+                <div class="row" id="row-noresult-view">
+                    <div class="row">
+                        <div class="col p-3 offset-md-2">
+                          <p>Presione el botón <b>Volver</b>, complete el formulario y luego presione <b>Calcular</b>, para así poder realizar el cálculo del finiquito.</p>
+                        </div>
+                    </div>
+                </div>
+<!-- FIN NO RESULTADOS -->
+<!-- RESULTADOS -->
+                <div class="row" id="row-result-view">
+                  <div class="col p-3 offset-md-2">
+
+                    <div class="row">
+                        <div class="col">
+                          <p class="finiResTit">Tu Indemnización es de: <b id="finiTotalInd"></b></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                      <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">  <p><b>Desglose</b></p></li>
+                        <li class="list-group-item res-despido-inj"><p>3 meses de salario: <b id="fini3M"></b></p></li>
+                        <li class="list-group-item ren-voluntaria"><p>Vacaciones: <b id="finiRVP"></b></p></li>
+                        <li class="list-group-item ren-voluntaria res-despido-inj"><p>Prima vacacional: <b id="finiPVA"></b></p></li>
+                        <li class="list-group-item ren-voluntaria res-despido-inj"><p>Proporcional aguinaldo: <b id="finiAProp"></b></p></li>
+                        <li class="list-group-item ren-voluntaria res-despido-inj"><p>Prima de antigüedad: <b id="finiRPAnt"></b></p> </li>
+                        <li class="list-group-item res-despido-inj"><p>20 dias de salario por año trabajado: <b id="fini20DpA"></b> <small><i>* No es obligatorio</i></small></p></li>
+
+                        <li class="list-group-item ren-voluntaria res-despido-inj"><p>Vacaciones adeudadas: <b id="finiRVA"></b></p></li>
+                        <li class="list-group-item ren-voluntaria res-despido-inj"><p>Días trabajados adeudados: <b id="finiDTAD"></b></p></li>
+
+                      </ul>
+                    </div>
+
+                  </div>
+                </div>
+<!-- FIN RESULTADOS -->
+              <div class="row">
+                  <div class="col p-3 offset-md-2">
+                    <button type="button" class="btn btn-dark btn-fini-volver">Volver</button>
+                  </div>
+              </div>
+<!-- PESTAÑA DOS FIN -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="finiquitoModal0" tabindex="-1" role="dialog" aria-labelledby="finiquitoModal0Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="finiquitoModal0Label">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-dark" data-dismiss="modal">Aceptar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- FIN MODAL -->
+    </div>
+
+    <footer>
+
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
+      <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/messages/messages.es-es.js" type="text/javascript"></script>
+
+      <script>
+      function finiquitoIsValidDate( d ) {
+        return d instanceof Date && !isNaN(d);
+      }
+
+      function finiquitoFormatDate( d ){
+        d = String( d ).split('/');
+
+        if ( d.length === 3 ){
+            return d[1] + '/' + d[0] + '/' + d[2];
+        }
+
+        return '';
+      }
+
+      function validarFormularioErrorOut( error, inputs ){
+        for ( let c=0; c< inputs.length; c++ ){
+          $( inputs[ c ] ).addClass( CLASS_IS_INVALID );
+        }
+        return {
+          result: false, errors: error
+        };
+      }
+
+      function validateNumberField( campoId, campoName, descType, s='o', min=0, max=10000000 ){
+        let aux = $( campoId ).val();
+        if ( Number.isNaN( aux ) || aux === '' ){
+          return validarFormularioErrorOut( 'Revise '+descType+' ingresad'+s+' en '+campoName+', solo se permiten valores númericos.', [campoId] );
+        }
+
+        if ( aux < min ){
+          return validarFormularioErrorOut( 'Revise '+descType+' ingresad'+s+' en '+campoName+', el valor mínimo admitido es: '+min+'.', [campoId] );
+        }
+
+        if ( aux > max ){
+          return validarFormularioErrorOut( 'Revise '+descType+' ingresad'+s+' en '+campoName+', el valor máximo admitido es: '+max+'.', [campoId] );
+        }
+
+        return { result: true };
+      }
+
+      function validarFormulario(){
+        let aux;
+        //reseteo clases de validacion
+        $( '.form-control' ).removeClass( CLASS_IS_INVALID );
+
+        //Comprobando fecha inicial
+        aux = $( ID_INPUT_INGRESO ).val();
+        if ( aux === '' ){
+          return validarFormularioErrorOut( 'Revise la fecha de ingreso, no es válida.', [ID_INPUT_INGRESO] );
+        }
+
+        aux = new Date( finiquitoFormatDate( aux ) );
+        if ( !finiquitoIsValidDate( aux ) ){
+          return validarFormularioErrorOut( 'Revise la fecha de ingreso, no es válida.', [ID_INPUT_INGRESO] );
+        }
+
+        if ( aux.getFullYear() < INPUT_INGRESO_MINY ){
+          return validarFormularioErrorOut( 'Revise la fecha de ingreso, no es válida.', [ID_INPUT_INGRESO] );
+        }
+
+        if ( aux.getTime() > new Date().getTime() ){
+          return validarFormularioErrorOut( 'Revise la fecha de ingreso, no puede ser mayor al día de la fecha.', [ID_INPUT_INGRESO] );
+        }
+
+        //comprobando fecha final
+        aux = $( ID_INPUT_EGRESO ).val();
+        if ( aux === '' ){
+          return validarFormularioErrorOut( 'Es necesario definir la fecha de renuncia/despido.', [ID_INPUT_EGRESO] );
+        }
+
+        aux = new Date( finiquitoFormatDate( aux ) );
+        if ( !finiquitoIsValidDate( aux ) ){
+          return validarFormularioErrorOut( 'Revise la fecha de renuncia/despido, no es válida.', [ID_INPUT_EGRESO] );
+        }
+
+        if ( aux.getTime() < finiquitoGetFechaMinima().getTime() ){
+          return validarFormularioErrorOut( 'Revise la fecha de renuncia/despido, no es válida.', [ID_INPUT_EGRESO] );
+        }
+
+        if ( aux.getTime() > new Date().getTime() ){
+          return validarFormularioErrorOut( 'Revise la fecha de renuncia/despido, no puede ser mayor al día de la fecha.', [ID_INPUT_EGRESO] );
+        }
+
+        //se comprueba que la fecha inical no sea mayor a la fecha final
+        if ( aux.getTime() <  new Date( finiquitoFormatDate( $( ID_INPUT_INGRESO ).val() ) ).getTime() ){
+          return validarFormularioErrorOut( 'Revise la fechas, la fecha de ingreso no puede ser mayor a la de renuncia/despido.', [ID_INPUT_EGRESO, ID_INPUT_INGRESO] );
+        }
+
+        //se comprueba el salario diario
+        aux = validateNumberField( ID_INPUT_SALA_DIA, 'el salario diario', 'el monto', 'o', 1 );
+        if ( !aux.result ){
+          return aux;
+        }
+
+        //se comprueban los días laborales impagos
+        aux = validateNumberField( ID_INPUT_D_N_PAY, 'los días no pagos', 'la cantidad', 'a', 0 );
+        if ( !aux.result ){
+          return aux;
+        }
+
+        //se comprueban los días de aguinaldo
+        aux = validateNumberField( ID_INPUT_D_AGUI, 'los días de aguinaldo', 'la cantidad', 'a', 0 );
+        if ( !aux.result ){
+          return aux;
+        }
+
+        //se comprueban los días de vacaciones adeudados
+        aux = validateNumberField( ID_INPUT_D_VACA_D, 'los días de vacaciones adeudados del último periodo', 'la cantidad', 'a', 0 );
+        if ( !aux.result ){
+          return aux;
+        }
+
+        //se comprueba la prima vacacional
+        aux = validateNumberField( ID_INPUT_P_VACA, 'la prima vacacional', 'el porcentaje', 'o', 0, 100 );
+        if ( !aux.result ){
+          return aux;
+        }
+
+        //se comprueban los días de vacaciones
+        aux = validateNumberField( ID_INPUT_D_VACA, 'los días de vacaciones', 'la cantidad', 'a', 0 );
+        if ( !aux.result ){
+          return aux;
+        }
+
+        return { result: true };
+      }
+
+      function finiquitoFormatMoney( e ){
+        let formatter = new Intl.NumberFormat('es-AR', {
+              style: 'currency',
+              currency: 'ARS',
+              minimumFractionDigits: 2
+        });
+        return formatter.format( e );
+      }
+
+      </script>
+      <script>
+      //DEFINIDAS PARA SER MODIFICADA POR USUARIO FINAL
+      const SALARIO_MINIMO_GRAL                 = [{ m:185.56, l:'Zona Libre de la Frontera Norte' }, { m:123.22, l:'Resto del país' } ];
+      const CANT_MESES_MIN_DESVINCULACION       = 2;
+      const MULT_SALARIO_LIMITADO               = 2;
+      const CANT_DIAS_POR_ANIO_LEY              = 20;
+      const CANT_DESP_INJ_DIAS_POR_ANIO_ANT_LEY = 12;
+
+      //DEFINIDAS PARA PROGRAMADOR
+      const ID_BTN_CALCULAR    = '.btn-calcular-finiquito';
+      const ID_BTN_VOLVER      = '.btn-fini-volver';
+      const ID_MODAL           = '#finiquitoModal0';
+      const ID_INPUT_INGRESO   = '#finiIngreso';
+      const ID_INPUT_EGRESO    = '#finiEgreso';
+      const ID_INPUT_MOTIVO    = '#finiSelectMotFin';
+      const ID_INPUT_SALA_DIA  = '#finiSalarioDiario';
+      const ID_INPUT_D_N_PAY   = '#finiDiasNoPagos';
+      const ID_INPUT_D_AGUI    = '#finiDiasAguinaldo';
+      const ID_INPUT_D_VACA    = '#finiDiasVacaciones';
+      const ID_INPUT_D_VACA_D  = '#finiDiasAdeudadosVaca';
+      const ID_INPUT_P_VACA    = '#finiPrimaVacacional';
+      const CLASS_IS_INVALID   = 'is-invalid';
+      const ID_ROW_RESULTS     = '#row-result-view';
+      const ID_ROW_NO_RESULTS  = '#row-noresult-view';
+      const INPUT_INGRESO_MINY = 1900;
+      const ID_LABEL_TOTAL     = '#finiTotalInd';
+      const ID_INPUT_ZONA_GEO  = '#finiSelectZonaGeo';
+
+      const ID_LABEL_PRIMA_ANTIGUEDAD = '#finiRPAnt';
+      const ID_LABEL_AGUINALDO_PROP   = '#finiAProp';
+      const ID_LABEL_VACA_D_P         = '#finiRVA';
+      const ID_LABEL_VACA_P           = '#finiRVP';
+      const ID_LABEL_DT_ADEUDA        = '#finiDTAD';
+      const ID_LABEL_VACA_PR          = '#finiPVA';
+      const ID_MINIMA_FECHA_E         = '#LMinDateE';
+      const ID_REN_VOLUNTARIA         = '.ren-voluntaria';
+      const ID_DESPIDO_INJUST         = '.res-despido-inj';
+
+      const ID_LABEL_3S     = '#fini3M';
+      const ID_LABEL_20DPAT = '#fini20DpA';
+
+      const FORMATO_FECHA = 'dd/mm/yyyy';
+
+      const finiSelectMotFinOptions = [
+        { v: 4, d: 'Despido injustificado', calculadora: ()=>{ calculadoraDespidoInjustificado(); } },
+        { v: 12, d: 'Renuncia voluntaria', calculadora: ()=>{ calculadoraRenunciaVoluntaria(); } }
+      ];
+
+      function showAlert( text, title ){
+        $( ID_MODAL + ' .modal-title' ).text( title );
+        $( ID_MODAL + ' .modal-body' ).html( '<p>'+ text + '</p>' );
+
+        $( ID_MODAL ).modal( 'show' );
+      }
+
+      function goToResult( params ){
+        $('.nav-tabs a[href="#resultado"]').tab('show');
+        $( ID_ROW_RESULTS ).show();
+        $( ID_ROW_NO_RESULTS ).hide();
+      }
+
+      function getSalarioMinimoGral(){
+        return $( ID_INPUT_ZONA_GEO ).val();
+      }
+
+      function calculadoraDespidoInjustificado(){
+        let salario_diario          = Number( $( ID_INPUT_SALA_DIA ).val() );
+        let dias_vacacion_pago      = Number( $( ID_INPUT_D_VACA ).val() );
+        let prima_vacacional_i      = Number( $( ID_INPUT_P_VACA ).val() );
+        let dias_trabajados_adeuda  = Number( $( ID_INPUT_D_N_PAY ).val() );
+        let dias_vacacion_adeuda    = Number( $( ID_INPUT_D_VACA_D ).val() );
+        let dias_aguinaldo          = Number( $( ID_INPUT_D_AGUI ).val() );
+
+        let prima_vacacional_diaria   = ( salario_diario * dias_vacacion_pago ) / 100 * prima_vacacional_i / 365.25;
+        let salario_diario_integrado  = ( ( (salario_diario * 15) / 365 ) + salario_diario + prima_vacacional_diaria );
+        let salario_mensual_integrado = salario_diario_integrado * 30;
+        let indemniza_3_meses         = salario_mensual_integrado * 3;
+
+        let cantidad_anios   = Math.floor( getDiasTrabajados() / 365.25 );
+        let indemniza_20_dpa = cantidad_anios * salario_diario_integrado * CANT_DIAS_POR_ANIO_LEY;
+
+        if ( salario_diario_integrado > ( getSalarioMinimoGral() * MULT_SALARIO_LIMITADO) ){
+          salario_diario_integrado = getSalarioMinimoGral() * MULT_SALARIO_LIMITADO;
+        }
+
+        let prima_antiguedad = cantidad_anios * CANT_DESP_INJ_DIAS_POR_ANIO_ANT_LEY * salario_diario_integrado;
+
+        let proporcional_dias_t_adeudados = dias_trabajados_adeuda * salario_diario_integrado;
+        let vacaciones_adeudadas_prop     = dias_vacacion_adeuda * salario_diario_integrado;
+
+        let vacaciones_proporcional       = salario_diario * dias_vacacion_pago;
+        let prima_vacacional              = vacaciones_proporcional / 100 * prima_vacacional_i;
+
+        let dias_laborados_anio_corriente = getDiasTrabajadosAnioCorriente();
+        let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * dias_laborados_anio_corriente;
+
+        let sumatoria = indemniza_3_meses + prima_antiguedad + aguinaldo_proporcional + vacaciones_adeudadas_prop + vacaciones_proporcional + proporcional_dias_t_adeudados;
+
+        $( ID_LABEL_TOTAL ).text( finiquitoFormatMoney( sumatoria ) );
+        $( ID_LABEL_3S ).text( finiquitoFormatMoney( indemniza_3_meses ) );
+        $( ID_LABEL_20DPAT ).text( finiquitoFormatMoney( indemniza_20_dpa ) );
+        $( ID_LABEL_PRIMA_ANTIGUEDAD ).text( finiquitoFormatMoney( prima_antiguedad ) );
+        $( ID_LABEL_DT_ADEUDA ).text( finiquitoFormatMoney( proporcional_dias_t_adeudados ) );
+        $( ID_LABEL_VACA_D_P ).text( finiquitoFormatMoney( vacaciones_adeudadas_prop ) );
+        $( ID_LABEL_VACA_PR ).text( finiquitoFormatMoney( prima_vacacional ) );
+        $( ID_LABEL_AGUINALDO_PROP ).text( finiquitoFormatMoney( aguinaldo_proporcional ) );
+
+        $( ID_REN_VOLUNTARIA ).hide();
+        $( ID_DESPIDO_INJUST ).show();
+      }
+
+      function getDiasTrabajados(){
+        let dIni = new Date( finiquitoFormatDate( $( ID_INPUT_INGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
+        let dFin = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
+        return dFin - dIni;
+      }
+
+      function getDiasTrabajadosAnioCorriente(){
+        let dIni = new Date(  new Date().getFullYear(), 0, 1 ).getTime() / 1000 / 60 / 60 / 24;
+        let dFin = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
+        let res = dFin - dIni;
+        if (res < 0){
+          return 0;
+        }
+        return res;
+      }
+
+      function calculadoraRenunciaVoluntaria(){
+        let salario_diario          = Number( $( ID_INPUT_SALA_DIA ).val() );
+        let dias_trabajados_adeuda  = Number( $( ID_INPUT_D_N_PAY ).val() );
+        let dias_vacacion_adeuda    = Number( $( ID_INPUT_D_VACA_D ).val() );
+        let dias_vacacion_pago      = Number( $( ID_INPUT_D_VACA ).val() );
+        let prima_vacacional_i      = Number( $( ID_INPUT_P_VACA ).val() );
+        let dias_aguinaldo          = Number( $( ID_INPUT_D_AGUI ).val() );
+
+        let aguinaldo_diario              = salario_diario * 30 / 365.25 / 2;
+        let dias_trabajados               = getDiasTrabajados();
+        let dias_laborados_anio_corriente = getDiasTrabajadosAnioCorriente();
+        let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * dias_laborados_anio_corriente;
+        let vacaciones_proporcional       = salario_diario * dias_vacacion_pago;
+        let prima_vacacional              = vacaciones_proporcional / 100 * prima_vacacional_i;
+
+        let salario_real_c_tope = salario_diario;
+        if ( salario_real_c_tope > ( getSalarioMinimoGral() * MULT_SALARIO_LIMITADO) ){
+          salario_real_c_tope = getSalarioMinimoGral() * MULT_SALARIO_LIMITADO;
+        }
+
+        let antiguedad_anios = dias_trabajados / 365.25;
+        let prima_antiguedad = 0;
+        if ( antiguedad_anios >= 15 ){
+          prima_antiguedad = 12 * salario_real_c_tope * antiguedad_anios;
+        }
+
+        let proporcional_dias_t_adeudados = dias_trabajados_adeuda * salario_diario;
+        let vacaciones_adeudadas_prop     = dias_vacacion_adeuda * salario_diario;
+
+        let sumatoria = prima_antiguedad + aguinaldo_proporcional + vacaciones_proporcional + prima_vacacional + proporcional_dias_t_adeudados + vacaciones_adeudadas_prop;
+
+        $( ID_LABEL_TOTAL ).text( finiquitoFormatMoney( sumatoria ) );
+        $( ID_LABEL_PRIMA_ANTIGUEDAD ).text( finiquitoFormatMoney( prima_antiguedad ) );
+        $( ID_LABEL_AGUINALDO_PROP ).text( finiquitoFormatMoney( aguinaldo_proporcional ) );
+        $( ID_LABEL_VACA_D_P ).text( finiquitoFormatMoney( vacaciones_adeudadas_prop ) );
+        $( ID_LABEL_VACA_P ).text( finiquitoFormatMoney( vacaciones_proporcional ) );
+        $( ID_LABEL_VACA_PR ).text( finiquitoFormatMoney( prima_vacacional ) );
+        $( ID_LABEL_DT_ADEUDA ).text( finiquitoFormatMoney( proporcional_dias_t_adeudados ) );
+
+        $( ID_DESPIDO_INJUST ).hide();
+        $( ID_REN_VOLUNTARIA ).show();
+      }
+
+      function calcularFiniquito(){
+        let validacion = validarFormulario();
+        let motivo     = $( ID_INPUT_MOTIVO ).val();
+
+        if ( !validacion.result ){
+          showAlert( validacion.errors, 'Atención' );
+          return false;
+        }
+
+        if ( motivo !== '' ){
+          finiSelectMotFinOptions[ motivo ].calculadora();
+          goToResult();
+        } else {
+          showAlert( 'Ha ocurrido un error, reintente más tarde.', 'Atención' );
+        }
+      }
+
+      function finiquitoVolverInicio(){
+        $('.nav-tabs a[href="#info-lab"]').tab('show');
+      }
+
+      function inicializar(){
+        $( ID_BTN_CALCULAR ).click( ( e )=>{ calcularFiniquito(); } );
+        $( ID_BTN_VOLVER ).click( ( e )=>{ finiquitoVolverInicio(); } );
+
+        //se calcula la minima fecha adminitad para egreso
+        let fecha_minima = finiquitoGetFechaMinima();
+        $( ID_MINIMA_FECHA_E ).text(fecha_minima.getDate() + '/' + (Number( fecha_minima.getMonth() ) + 1) + '/' + fecha_minima.getFullYear() );
+
+        $( ID_INPUT_INGRESO ).datepicker({ uiLibrary: 'bootstrap4', locale: 'es-es', format: FORMATO_FECHA });
+        $( ID_INPUT_EGRESO ).datepicker({ uiLibrary: 'bootstrap4', locale: 'es-es', format: FORMATO_FECHA });
+
+        for ( let c=0; c < finiSelectMotFinOptions.length ; c++ ){
+          $( ID_INPUT_MOTIVO ).append( '<option value="' + c + '">'+ finiSelectMotFinOptions[ c ].d +'</option>' );
+        }
+
+        for ( let c=0; c < SALARIO_MINIMO_GRAL.length; c++ ){
+          $( ID_INPUT_ZONA_GEO ).append( '<option value="' + SALARIO_MINIMO_GRAL[ c ].m + '">'+ SALARIO_MINIMO_GRAL[ c ].l +'</option>' );
+        }
+        $( ID_INPUT_ZONA_GEO ).val( SALARIO_MINIMO_GRAL[ 0 ].m );
+
+        $( ID_ROW_RESULTS ).hide();
+        $( ID_ROW_NO_RESULTS ).show();
+        $( ID_REN_VOLUNTARIA ).hide();
+        $( ID_DESPIDO_INJUST ).hide();
+      }
+
+      function finiquitoGetFechaMinima(){
+        let hoy = new Date();
+        return new Date( hoy.getFullYear(), hoy.getMonth()-CANT_MESES_MIN_DESVINCULACION, hoy.getDate() );
+      }
+
+      $( document ).ready( function() {
+        inicializar();
+      } );
+      </script>
+    </footer>
+  </body>
+</html>
