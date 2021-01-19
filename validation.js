@@ -93,9 +93,11 @@ function validarFormulario(){
   }
 
   //se comprueban los días laborales impagos
-  aux = validateNumberField( ID_INPUT_D_N_PAY, 'los días no pagos', 'la cantidad', 'a', 0 );
-  if ( !aux.result ){
-    return aux;
+  if ( $( ID_INPUT_D_N_PAY ).val() != '' ){
+    aux = validateNumberField( ID_INPUT_D_N_PAY, 'los días no pagos', 'la cantidad', 'a', 0 );
+    if ( !aux.result ){
+      return aux;
+    }
   }
 
   //se comprueban los días de aguinaldo
@@ -105,9 +107,11 @@ function validarFormulario(){
   }
 
   //se comprueban los días de vacaciones adeudados
-  aux = validateNumberField( ID_INPUT_D_VACA_D, 'los días de vacaciones adeudados del último periodo', 'la cantidad', 'a', 0 );
-  if ( !aux.result ){
-    return aux;
+  if ( $( ID_INPUT_D_VACA_D ).val() != '' ){
+    aux = validateNumberField( ID_INPUT_D_VACA_D, 'los días de vacaciones adeudados del último periodo', 'la cantidad', 'a', 0 );
+    if ( !aux.result ){
+      return aux;
+    }
   }
 
   //se comprueba la prima vacacional

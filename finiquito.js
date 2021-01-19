@@ -1,9 +1,12 @@
 //DEFINIDAS PARA SER MODIFICADA POR USUARIO FINAL
-const SALARIO_MINIMO_GRAL                 = [{ m:185.56, l:'Zona Libre de la Frontera Norte' }, { m:123.22, l:'Resto del país' } ];
+const SALARIO_MINIMO_GRAL                 = [{ m:213.39, l:'Zona Libre de la Frontera Norte' }, { m:141.70, l:'Resto del país' } ];
 const CANT_MESES_MIN_DESVINCULACION       = 2;
 const MULT_SALARIO_LIMITADO               = 2;
 const CANT_DIAS_POR_ANIO_LEY              = 20;
 const CANT_DESP_INJ_DIAS_POR_ANIO_ANT_LEY = 12;
+const PREDETERMINADO_DIAS_AGUINALDO       = 15;
+const PREDETERMINADO_PRIMA_VACACIONAL     = 25;
+const PREDETERMINADO_SELECTOR_ZONA_GEO    = 141.70;
 
 //DEFINIDAS PARA PROGRAMADOR
 const ID_BTN_CALCULAR    = '.btn-calcular-finiquito';
@@ -32,8 +35,10 @@ const ID_LABEL_VACA_P           = '#finiRVP';
 const ID_LABEL_DT_ADEUDA        = '#finiDTAD';
 const ID_LABEL_VACA_PR          = '#finiPVA';
 const ID_MINIMA_FECHA_E         = '#LMinDateE';
+const ID_SELECT_20D             = '#enable20Days';
 const ID_REN_VOLUNTARIA         = '.ren-voluntaria';
 const ID_DESPIDO_INJUST         = '.res-despido-inj';
+const ID_RES_DIAS_P_A_LEY       = '#dias-p-anio-t';
 
 const ID_LABEL_3S     = '#fini3M';
 const ID_LABEL_20DPAT = '#fini20DpA';
@@ -91,9 +96,19 @@ function calculadoraDespidoInjustificado(){
   let prima_vacacional              = vacaciones_proporcional / 100 * prima_vacacional_i;
 
   let dias_laborados_anio_corriente = getDiasTrabajadosAnioCorriente();
-  let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * dias_laborados_anio_corriente;
+  let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * salario_diario * dias_laborados_anio_corriente;
 
   let sumatoria = indemniza_3_meses + prima_antiguedad + aguinaldo_proporcional + vacaciones_adeudadas_prop + vacaciones_proporcional + proporcional_dias_t_adeudados;
+
+  $( ID_REN_VOLUNTARIA ).hide();
+  $( ID_DESPIDO_INJUST ).show();
+
+  if ( $( ID_SELECT_20D ).is(":checked") ){
+    sumatoria += indemniza_20_dpa;
+    $( ID_RES_DIAS_P_A_LEY ).show();
+  } else {
+    $( ID_RES_DIAS_P_A_LEY ).hide();
+  }
 
   $( ID_LABEL_TOTAL ).text( finiquitoFormatMoney( sumatoria ) );
   $( ID_LABEL_3S ).text( finiquitoFormatMoney( indemniza_3_meses ) );
@@ -103,9 +118,6 @@ function calculadoraDespidoInjustificado(){
   $( ID_LABEL_VACA_D_P ).text( finiquitoFormatMoney( vacaciones_adeudadas_prop ) );
   $( ID_LABEL_VACA_PR ).text( finiquitoFormatMoney( prima_vacacional ) );
   $( ID_LABEL_AGUINALDO_PROP ).text( finiquitoFormatMoney( aguinaldo_proporcional ) );
-
-  $( ID_REN_VOLUNTARIA ).hide();
-  $( ID_DESPIDO_INJUST ).show();
 }
 
 function getDiasTrabajados(){
@@ -115,12 +127,24 @@ function getDiasTrabajados(){
 }
 
 function getDiasTrabajadosAnioCorriente(){
-  let dIni = new Date(  new Date().getFullYear(), 0, 1 ).getTime() / 1000 / 60 / 60 / 24;
-  let dFin = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
-  let res = dFin - dIni;
+  let dIni = new Date( finiquitoFormatDate( $( ID_INPUT_INGRESO).val()  ) );
+
+  let dFin    = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
+  let anio_cc = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getFullYear();
+
+  console.log(anio_cc);
+
+  if ( dIni.getFullYear() <= anio_cc ){
+    dIni = new Date( anio_cc, 0, 1);
+  }
+
+  let res = dFin - ( dIni.getTime() / 1000 / 60 / 60 / 24 );
+
   if (res < 0){
     return 0;
   }
+
+  console.log(res);
   return res;
 }
 
@@ -135,7 +159,7 @@ function calculadoraRenunciaVoluntaria(){
   let aguinaldo_diario              = salario_diario * 30 / 365.25 / 2;
   let dias_trabajados               = getDiasTrabajados();
   let dias_laborados_anio_corriente = getDiasTrabajadosAnioCorriente();
-  let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * dias_laborados_anio_corriente;
+  let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * salario_diario * dias_laborados_anio_corriente;
   let vacaciones_proporcional       = salario_diario * dias_vacacion_pago;
   let prima_vacacional              = vacaciones_proporcional / 100 * prima_vacacional_i;
 
@@ -192,6 +216,17 @@ function inicializar(){
   $( ID_BTN_CALCULAR ).click( ( e )=>{ calcularFiniquito(); } );
   $( ID_BTN_VOLVER ).click( ( e )=>{ finiquitoVolverInicio(); } );
 
+  $( ID_INPUT_MOTIVO ).change( ( e )=> {
+    if ( $( ID_INPUT_MOTIVO ).val() == 0 ){ //[MODIFICAR A FUTURO]
+      $( ID_REN_VOLUNTARIA ).hide();
+      $( ID_DESPIDO_INJUST ).show();
+      $( ID_SELECT_20D ).val( true );
+    } else {
+      $( ID_REN_VOLUNTARIA ).show();
+      $( ID_DESPIDO_INJUST ).hide();
+    }
+  } );
+
   //se calcula la minima fecha adminitad para egreso
   let fecha_minima = finiquitoGetFechaMinima();
   $( ID_MINIMA_FECHA_E ).text(fecha_minima.getDate() + '/' + (Number( fecha_minima.getMonth() ) + 1) + '/' + fecha_minima.getFullYear() );
@@ -211,7 +246,12 @@ function inicializar(){
   $( ID_ROW_RESULTS ).hide();
   $( ID_ROW_NO_RESULTS ).show();
   $( ID_REN_VOLUNTARIA ).hide();
-  $( ID_DESPIDO_INJUST ).hide();
+  $( ID_DESPIDO_INJUST ).show();
+
+  //definición de valores por defecto
+  $( ID_INPUT_D_AGUI ).val( PREDETERMINADO_DIAS_AGUINALDO );
+  $( ID_INPUT_P_VACA ).val( PREDETERMINADO_PRIMA_VACACIONAL );
+  $( ID_INPUT_ZONA_GEO ).val( PREDETERMINADO_SELECTOR_ZONA_GEO );
 }
 
 function finiquitoGetFechaMinima(){
