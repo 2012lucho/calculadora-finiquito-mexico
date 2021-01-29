@@ -117,6 +117,7 @@ function calculadoraDespidoInjustificado(){
   $( ID_LABEL_DT_ADEUDA ).text( finiquitoFormatMoney( proporcional_dias_t_adeudados ) );
   $( ID_LABEL_VACA_D_P ).text( finiquitoFormatMoney( vacaciones_adeudadas_prop ) );
   $( ID_LABEL_VACA_PR ).text( finiquitoFormatMoney( prima_vacacional ) );
+  $( ID_LABEL_VACA_P ).text( finiquitoFormatMoney( vacaciones_proporcional ) );
   $( ID_LABEL_AGUINALDO_PROP ).text( finiquitoFormatMoney( aguinaldo_proporcional ) );
 }
 
