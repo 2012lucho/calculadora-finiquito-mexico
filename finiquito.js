@@ -34,6 +34,7 @@ const ID_LABEL_VACA_D_P         = '#finiRVA';
 const ID_LABEL_VACA_P           = '#finiRVP';
 const ID_LABEL_DT_ADEUDA        = '#finiDTAD';
 const ID_LABEL_VACA_PR          = '#finiPVA';
+const ID_LABEL_SDI              = '#salDI';
 const ID_MINIMA_FECHA_E         = '#LMinDateE';
 const ID_SELECT_20D             = '#enable20Days';
 const ID_REN_VOLUNTARIA         = '.ren-voluntaria';
@@ -75,17 +76,14 @@ function calculadoraDespidoInjustificado(){
   let dias_vacacion_adeuda    = Number( $( ID_INPUT_D_VACA_D ).val() );
   let dias_aguinaldo          = Number( $( ID_INPUT_D_AGUI ).val() );
 
-  let prima_vacacional_diaria   = ( salario_diario * dias_vacacion_pago ) / 100 * prima_vacacional_i / 365.25;
-  let salario_diario_integrado  = ( ( (salario_diario * 15) / 365 ) + salario_diario + prima_vacacional_diaria );
+  let prima_vacacional_diaria   = ( salario_diario * dias_vacacion_pago ) / 100 * prima_vacacional_i / 365;
+
+  let salario_diario_integrado  = (( dias_vacacion_pago + dias_vacacion_adeuda ) * salario_diario * (prima_vacacional_i/100) ) / 365 + salario_diario + ( dias_aguinaldo * salario_diario) / 365;console.log(salario_diario_integrado);
   let salario_mensual_integrado = salario_diario_integrado * 30;
   let indemniza_3_meses         = salario_mensual_integrado * 3;
 
-  let cantidad_anios   = Math.floor( getDiasTrabajados() / 365.25 );
+  let cantidad_anios   = Math.floor( getDiasTrabajados() / 365 );
   let indemniza_20_dpa = cantidad_anios * salario_diario_integrado * CANT_DIAS_POR_ANIO_LEY;
-
-  if ( salario_diario_integrado > ( getSalarioMinimoGral() * MULT_SALARIO_LIMITADO) ){
-    salario_diario_integrado = getSalarioMinimoGral() * MULT_SALARIO_LIMITADO;
-  }
 
   let prima_antiguedad = cantidad_anios * CANT_DESP_INJ_DIAS_POR_ANIO_ANT_LEY * salario_diario_integrado;
 
@@ -96,7 +94,7 @@ function calculadoraDespidoInjustificado(){
   let prima_vacacional              = vacaciones_proporcional / 100 * prima_vacacional_i;
 
   let dias_laborados_anio_corriente = getDiasTrabajadosAnioCorriente();
-  let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * salario_diario * dias_laborados_anio_corriente;
+  let aguinaldo_proporcional        = ( dias_aguinaldo / 365 ) * salario_diario * dias_laborados_anio_corriente;
 
   let sumatoria = indemniza_3_meses + prima_antiguedad + aguinaldo_proporcional + vacaciones_adeudadas_prop + vacaciones_proporcional + proporcional_dias_t_adeudados;
 
@@ -110,6 +108,7 @@ function calculadoraDespidoInjustificado(){
     $( ID_RES_DIAS_P_A_LEY ).hide();
   }
 
+  $( ID_LABEL_SDI ).text( finiquitoFormatMoney( salario_diario_integrado ) );
   $( ID_LABEL_TOTAL ).text( finiquitoFormatMoney( sumatoria ) );
   $( ID_LABEL_3S ).text( finiquitoFormatMoney( indemniza_3_meses ) );
   $( ID_LABEL_20DPAT ).text( finiquitoFormatMoney( indemniza_20_dpa ) );
@@ -157,10 +156,10 @@ function calculadoraRenunciaVoluntaria(){
   let prima_vacacional_i      = Number( $( ID_INPUT_P_VACA ).val() );
   let dias_aguinaldo          = Number( $( ID_INPUT_D_AGUI ).val() );
 
-  let aguinaldo_diario              = salario_diario * 30 / 365.25 / 2;
+  let aguinaldo_diario              = salario_diario * 30 / 365 / 2;
   let dias_trabajados               = getDiasTrabajados();
   let dias_laborados_anio_corriente = getDiasTrabajadosAnioCorriente();
-  let aguinaldo_proporcional        = ( dias_aguinaldo / 365.25 ) * salario_diario * dias_laborados_anio_corriente;
+  let aguinaldo_proporcional        = ( dias_aguinaldo / 365 ) * salario_diario * dias_laborados_anio_corriente;
   let vacaciones_proporcional       = salario_diario * dias_vacacion_pago;
   let prima_vacacional              = vacaciones_proporcional / 100 * prima_vacacional_i;
 
@@ -169,7 +168,7 @@ function calculadoraRenunciaVoluntaria(){
     salario_real_c_tope = getSalarioMinimoGral() * MULT_SALARIO_LIMITADO;
   }
 
-  let antiguedad_anios = dias_trabajados / 365.25;
+  let antiguedad_anios = dias_trabajados / 365;
   let prima_antiguedad = 0;
   if ( antiguedad_anios >= 15 ){
     prima_antiguedad = 12 * salario_real_c_tope * antiguedad_anios;
