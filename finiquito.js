@@ -78,15 +78,18 @@ function calculadoraDespidoInjustificado(){
 
   let prima_vacacional_diaria   = ( salario_diario * dias_vacacion_pago ) / 100 * prima_vacacional_i / 365;
 
-  let salario_diario_integrado  = (( dias_vacacion_pago + dias_vacacion_adeuda ) * salario_diario * (prima_vacacional_i/100) ) / 365 + salario_diario + ( dias_aguinaldo * salario_diario) / 365;console.log(salario_diario_integrado);
+  let salario_diario_integrado  = (( dias_vacacion_pago ) * salario_diario * (prima_vacacional_i/100) ) / 365 + salario_diario + ( dias_aguinaldo * salario_diario) / 365;
   let salario_mensual_integrado = salario_diario_integrado * 30;
   let indemniza_3_meses         = salario_mensual_integrado * 3;
 
   let cantidad_anios   = Math.floor( getDiasTrabajados() / 365 );
   let indemniza_20_dpa = cantidad_anios * salario_diario_integrado * CANT_DIAS_POR_ANIO_LEY;
 
-  let prima_antiguedad = cantidad_anios * CANT_DESP_INJ_DIAS_POR_ANIO_ANT_LEY * salario_diario_integrado;
-
+  let dias_trabajados  = getDiasTrabajados();
+  let antiguedad_anios = dias_trabajados / 365;
+  let prima_antiguedad = 0;
+  prima_antiguedad = 12 * salario_diario_integrado * antiguedad_anios;
+  
   let proporcional_dias_t_adeudados = dias_trabajados_adeuda * salario_diario_integrado;
   let vacaciones_adeudadas_prop     = dias_vacacion_adeuda * salario_diario_integrado;
 
