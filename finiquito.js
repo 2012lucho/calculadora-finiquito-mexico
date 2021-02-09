@@ -88,8 +88,12 @@ function calculadoraDespidoInjustificado(){
   let dias_trabajados  = getDiasTrabajados();
   let antiguedad_anios = dias_trabajados / 365;
   let prima_antiguedad = 0;
-  prima_antiguedad = 12 * salario_diario_integrado * antiguedad_anios;
-  
+  let s_d_i_a = salario_diario_integrado;
+  if ( s_d_i_a > ( getSalarioMinimoGral() * MULT_SALARIO_LIMITADO) ){
+    s_d_i_a = getSalarioMinimoGral() * MULT_SALARIO_LIMITADO;
+  }console.log(s_d_i_a);
+  prima_antiguedad = 12 * s_d_i_a * antiguedad_anios;
+
   let proporcional_dias_t_adeudados = dias_trabajados_adeuda * salario_diario_integrado;
   let vacaciones_adeudadas_prop     = dias_vacacion_adeuda * salario_diario_integrado;
 

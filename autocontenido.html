@@ -140,8 +140,11 @@
 
                     <div class="row">
                       <ul class="list-group list-group-flush mb-3">
-                        <li class="list-group-item">  <p><b>Desglose</b></p></li>
+                        <li class="list-group-item res-despido-inj">  <p><b>Se considera</b></p></li>
                         <li class="list-group-item res-despido-inj"><p>Salario diario integrado: <b id="salDI"></b></p></li>
+                      </ul>
+                      <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">  <p><b>Desglose</b></p></li>
                         <li class="list-group-item res-despido-inj"><p>3 meses de salario: <b id="fini3M"></b></p></li>
                         <li class="list-group-item ren-voluntaria res-despido-inj"><p>Vacaciones: <b id="finiRVP"></b></p></li>
                         <li class="list-group-item ren-voluntaria res-despido-inj"><p>Prima vacacional: <b id="finiPVA"></b></p></li>
@@ -342,6 +345,7 @@
         });
         return formatter.format( e );
       }
+
       </script>
 
       <script>
@@ -425,14 +429,21 @@
 
         let prima_vacacional_diaria   = ( salario_diario * dias_vacacion_pago ) / 100 * prima_vacacional_i / 365;
 
-        let salario_diario_integrado  = (( dias_vacacion_pago + dias_vacacion_adeuda ) * salario_diario * (prima_vacacional_i/100) ) / 365 + salario_diario + ( dias_aguinaldo * salario_diario) / 365;console.log(salario_diario_integrado);
+        let salario_diario_integrado  = (( dias_vacacion_pago ) * salario_diario * (prima_vacacional_i/100) ) / 365 + salario_diario + ( dias_aguinaldo * salario_diario) / 365;
         let salario_mensual_integrado = salario_diario_integrado * 30;
         let indemniza_3_meses         = salario_mensual_integrado * 3;
 
         let cantidad_anios   = Math.floor( getDiasTrabajados() / 365 );
         let indemniza_20_dpa = cantidad_anios * salario_diario_integrado * CANT_DIAS_POR_ANIO_LEY;
 
-        let prima_antiguedad = cantidad_anios * CANT_DESP_INJ_DIAS_POR_ANIO_ANT_LEY * salario_diario_integrado;
+        let dias_trabajados  = getDiasTrabajados();
+        let antiguedad_anios = dias_trabajados / 365;
+        let prima_antiguedad = 0;
+        let s_d_i_a = salario_diario_integrado;
+        if ( s_d_i_a > ( getSalarioMinimoGral() * MULT_SALARIO_LIMITADO) ){
+          s_d_i_a = getSalarioMinimoGral() * MULT_SALARIO_LIMITADO;
+        }
+        prima_antiguedad = 12 * s_d_i_a * antiguedad_anios;
 
         let proporcional_dias_t_adeudados = dias_trabajados_adeuda * salario_diario_integrado;
         let vacaciones_adeudadas_prop     = dias_vacacion_adeuda * salario_diario_integrado;
@@ -478,8 +489,7 @@
 
         let dFin    = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
         let anio_cc = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getFullYear();
-
-        console.log(anio_cc);
+        
 
         if ( dIni.getFullYear() <= anio_cc ){
           dIni = new Date( anio_cc, 0, 1);
@@ -491,7 +501,7 @@
           return 0;
         }
 
-        console.log(res);
+
         return res;
       }
 
