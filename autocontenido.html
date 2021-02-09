@@ -1,16 +1,45 @@
 <html>
   <head>
-    <title>Calculadora de Finiquito - Ley Mexicana del Trabajo</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <link href="./style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <style>
 
+    #finiquitoTabs .nav-link {
+      border-radius: 0px !important;
+      color: #000;
+      font-weight: bold;
+    }
+
+    #finiquitoTabs .active{
+      background: #8f100b !important;
+      color: #fff !important;
+    }
+
+    .gj-datepicker-bootstrap [role="right-icon"] button{
+      height: 100%;
+    }
+
+    #finiquitoCont {
+      border: 1px solid #ccc;
+      min-width: 500px;
+      min-height: 1200px;
+    }
+
+    .finiResTit{
+      font-size: 1.75em;
+    }
+
+    .bootstrap-select > .dropdown-toggle::after {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    margin-top: -2px;
+    vertical-align: middle;
+    }
+    </style>
   </head>
   <body>
-    <div class="flush-container">
+    <div class="container">
       <div class="row">
 
         <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 mt-5 p-0" id="finiquitoCont">
@@ -489,7 +518,7 @@
 
         let dFin    = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getTime() / 1000 / 60 / 60 / 24;
         let anio_cc = new Date( finiquitoFormatDate( $( ID_INPUT_EGRESO ).val() ) ).getFullYear();
-        
+
 
         if ( dIni.getFullYear() <= anio_cc ){
           dIni = new Date( anio_cc, 0, 1);
